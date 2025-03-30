@@ -1,4 +1,5 @@
 # fufufafa-quotes-api
+## Introduction
 So, this repository was made when i scrolling my Facebook page and found interesting post from [Ingin Menjadi Programmer Handal, Namun Enggan Mengoding](https://www.facebook.com/share/p/1FeCf8mRn4/) group who informed that someone had created a [fufufafa-memorable-quote](https://github.com/fufufufafafa/fufufafa-memorable-quotes/) repository containing a collection of words that he had uploaded on Kaskus. So, i decided to make it as API that can give you random quote from Fufufafa's Kaskus Page.
 
 Anyway, big thanks to the creator of [fufufafa-memorable-quote](https://github.com/fufufufafafa/fufufafa-memorable-quotes/) for the repository
