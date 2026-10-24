@@ -1,6 +1,4 @@
-import express from 'express';
-// Import statis -> Vercel ikut membundel file ini ke dalam function (fs.readFileSync dengan path dinamis TIDAK ikut).
-import quotes from './quotes.json' with { type: 'json' };
+import express from 'express';import quotes from './quotes.json' with { type: 'json' };
 
 const byId = new Map(quotes.map((q) => [q.id, q]));
 
@@ -17,10 +15,8 @@ const toInt = (v, def, min, max) => {
   return Number.isNaN(n) ? def : Math.min(Math.max(n, min), max);
 };
 
-// GET /random            -> 1 quote acak (object)
-// GET /random?count=5    -> 5 quote acak tanpa duplikat (array, maks 50)
 app.get('/random', (req, res) => {
-  res.set('Cache-Control', 'no-store'); // biar CDN nggak nyimpen satu hasil acak buat semua orang
+  res.set('Cache-Control', 'no-store');
   if (req.query.count === undefined) {
     return res.json(quotes[Math.floor(Math.random() * quotes.length)]);
   }
@@ -33,7 +29,6 @@ app.get('/random', (req, res) => {
   res.json(out);
 });
 
-// GET /quotes?page=1&limit=20&q=kata   -> daftar + paginasi + pencarian teks
 app.get('/quotes', (req, res) => {
   const limit = toInt(req.query.limit, 20, 1, 100);
   const page = toInt(req.query.page, 1, 1, Number.MAX_SAFE_INTEGER);
@@ -65,7 +60,6 @@ app.get('/', (_req, res) => {
 
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
-// Vercel mengimpor app ini sebagai handler; listen cuma dipakai saat jalan lokal.
 if (!process.env.VERCEL) {
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => console.log(`API jalan di http://localhost:${PORT} (${quotes.length} quotes)`));
