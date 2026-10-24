@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Pakai quotes.fixed.json kalau ada, kalau nggak ya quotes.json. Bisa di-override: QUOTES_FILE=...
 const file =
   process.env.QUOTES_FILE ||
-  ['quotes.fixed.json', 'quotes.json'].map((f) => path.join(__dirname, f)).find((f) => fs.existsSync(f));
+  ['quotes.json'].map((f) => path.join(__dirname, f)).find((f) => fs.existsSync(f));
 
 if (!file) {
   console.error('quotes.json / quotes.fixed.json nggak ketemu di folder ini.');
