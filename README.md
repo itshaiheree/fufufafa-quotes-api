@@ -7,9 +7,7 @@ Anyway, big thanks to the creator of [fufufafa-memorable-quote](https://github.c
 ## Information about this repo
 This repository currently contains **1,337** quotes, compiled from data fetched from the Kaskus website (including versions from its archive on [web.archive.org](https://web.archive.org)) and from a TXT file in the [fufufafa-memorable-quote](https://github.com/fufufufafafa/fufufafa-memorable-quotes/) repository 
 
-You can also view the raw version of this data in a separate repository [here](https://github.com/itshaiheree/fufufafa-raw-quotes/).
-
-You can also use my own script to fetch the quote on `./tools` folder
+You can also view the raw version of this data in a separate repository [here](https://github.com/itshaiheree/fufufafa-raw-quotes/). You can also use my own script to fetch the quote on `./tools` folder at that repo.
 
 ## How to use it?
 
@@ -85,7 +83,7 @@ PORT=4000 npm start
 ```
 
 ## Project notes
-- The server automatically loads `quotes.fixed.json` if available, otherwise `quotes.json`.
+- The server automatically load `quotes.json` for the data.
 - You can also specify another file using:
 ```bash
 QUOTES_FILE=./quotes.json npm start
