@@ -1,24 +1,8 @@
 import express from 'express';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+// Import statis -> Vercel ikut membundel file ini ke dalam function (fs.readFileSync dengan path dinamis TIDAK ikut).
+import quotes from './quotes.json' with { type: 'json' };
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT = process.env.PORT || 3000;
-
-// Pakai quotes.fixed.json kalau ada, kalau nggak ya quotes.json. Bisa di-override: QUOTES_FILE=...
-const file =
-  process.env.QUOTES_FILE ||
-  ['quotes.fixed.json', 'quotes.json'].map((f) => path.join(__dirname, f)).find((f) => fs.existsSync(f));
-
-if (!file) {
-  console.error('quotes.json / quotes.fixed.json nggak ketemu di folder ini.');
-  process.exit(1);
-}
-
-const quotes = JSON.parse(fs.readFileSync(file, 'utf8'));
 const byId = new Map(quotes.map((q) => [q.id, q]));
-console.log(`Loaded ${quotes.length} quotes dari ${path.basename(file)}`);
 
 const app = express();
 
@@ -36,6 +20,7 @@ const toInt = (v, def, min, max) => {
 // GET /random            -> 1 quote acak (object)
 // GET /random?count=5    -> 5 quote acak tanpa duplikat (array, maks 50)
 app.get('/random', (req, res) => {
+  res.set('Cache-Control', 'no-store'); // biar CDN nggak nyimpen satu hasil acak buat semua orang
   if (req.query.count === undefined) {
     return res.json(quotes[Math.floor(Math.random() * quotes.length)]);
   }
@@ -80,4 +65,10 @@ app.get('/', (_req, res) => {
 
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
-app.listen(PORT, () => console.log(`API jalan di http://localhost:${PORT}`));
+// Vercel mengimpor app ini sebagai handler; listen cuma dipakai saat jalan lokal.
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`API jalan di http://localhost:${PORT} (${quotes.length} quotes)`));
+}
+
+export default app;
